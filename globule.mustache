@@ -1,0 +1,36 @@
+var __globule_modules = {};
+var __globule_constructors = {};
+var __globule_top_require = require;
+var __globule_require = function (id) {
+    var required;
+
+    if (__globule_modules.hasOwnProperty(id)) {
+        required = __globule_modules[id];
+    } else if (__globule_constructors.hasOwnProperty(id)) {
+        var module = {exports: {}};
+
+        __globule_constructors[id](
+            __globule_require,
+            module.exports,
+            module
+        );
+
+        __globule_modules[id] = module.exports;
+        required = __globule_modules[id];
+    } else {
+        required = __globule_top_require(id);
+    }
+
+    return required;
+};
+var __globule_define = function (id, constructor) {
+    __globule_constructors[id] = constructor;
+};
+
+{{#modules}}
+__globule_define('{{{id}}}', function (require, exports, module) { 
+    {{{source}}}
+});
+
+
+{{/modules}}

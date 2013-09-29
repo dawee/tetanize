@@ -1,0 +1,29 @@
+{
+  "name": "globule",
+  "version": "0.0.1",
+  "description": "Concat a Node package to a single CommonJS file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dawicorti/globule.git"
+  },
+  "keywords": [
+    "concat",
+    "node",
+    "commonjs"
+  ],
+  "author": "David Corticchiato",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/dawicorti/globule/issues"
+  },
+  "dependencies": {
+    "module-deps": "~1.0.2",
+    "nconf": "~0.6.7",
+    "through": "~2.3.4",
+    "mustache": "~0.7.2"
+  }
+}

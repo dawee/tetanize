@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var globule = require('..');
+var fs = require('fs');
+var nconf = require('nconf');
+var through = require('through');
+var options = [
+    {short: 'm', long: 'main', description: 'entry file to scan'},
+    {short: 'o', long: 'out', description: 'output file'}
+];
+var data = {};
+
+nconf.argv().env().file({ file: './package.json' });
+
+options.forEach(function (opt) {
+    data[opt.long] = nconf.get(opt.short) || nconf.get(opt.long);
+});
+
+globule.build(data, function (out) {
+    fs.writeFileSync(nconf.get('out') || nconf.get('o') || nconf.get('name') + '.js', out);
+});
