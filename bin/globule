@@ -6,9 +6,12 @@ var nconf = require('nconf');
 var through = require('through');
 var options = [
     {short: 'm', long: 'main', description: 'entry file to scan'},
-    {short: 'o', long: 'out', description: 'output file'}
+    {short: 'o', long: 'out', description: 'output file'},
+    {short: 'p', long: 'path', description: 'output file'}
 ];
-var data = {};
+var data = {
+    path: '.'
+};
 
 nconf.argv().env().file({ file: './package.json' });
 

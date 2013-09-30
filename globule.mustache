@@ -7,18 +7,13 @@ var __globule_require = function (id) {
     if (__globule_modules.hasOwnProperty(id)) {
         required = __globule_modules[id];
     } else if (__globule_constructors.hasOwnProperty(id)) {
-        var module = {exports: {}};
+        var mod = {exports: {}};
 
-        __globule_constructors[id](
-            __globule_require,
-            module.exports,
-            module
-        );
-
-        __globule_modules[id] = module.exports;
+        __globule_constructors[id](__globule_require, mod.exports, mod);
+        __globule_modules[id] = mod.exports;
         required = __globule_modules[id];
     } else {
-        required = __globule_top_require(id);
+        throw 'Error : could not find "' + id + '"';
     }
 
     return required;
@@ -29,8 +24,8 @@ var __globule_define = function (id, constructor) {
 
 {{#modules}}
 __globule_define('{{{id}}}', function (require, exports, module) { 
-    {{{source}}}
+{{{source}}}
 });
-
-
 {{/modules}}
+
+module.exports = __globule_require('{{{main}}}');

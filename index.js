@@ -20,19 +20,40 @@ function normalize(id) {
 
 function replaceRequires(mod) {
     Object.keys(mod.deps).forEach(function (call) {
-        //var id = normalize(mod.deps[call]);
+        if (typeof mod.deps[call] === 'string') {
+            var id = normalize(mod.deps[call]);
 
-        console.log(mod.source.match(new RegExp(call)))
+            mod.source = mod.source.replace(new RegExp('[\'\"]{1}' + call + '[\'\"]{1}'), '\'' + id + '\'');
+        }
     });
 
     return mod.source;
 }
 
+function indent(source) {
+    var indented = '';
+
+    source.split('\n').forEach(function (line) {
+        indented += '  ' + line + '\n';
+    });
+
+    return indented;
+}
+
 Globule.prototype.build = function (cb) {
     var that = this;
-    var stream = mdeps('/Users/dawi/Work/earpjs/index.js', {filter: function (id) {
-        if (id === 'fs') {
-            return false;
+    var stream = mdeps(path.resolve(this.main), {filter: function (id) {
+        if (id.match(/^[a-z]+$/)) {
+            var isNative = false;
+
+            try {
+                isNative = (require.resolve(id) === id)
+            } catch(e) {
+                console.log(id, 'is not native');
+                isNative = false;
+            }
+
+            return !isNative;
         }
         return true;
     }});
@@ -48,7 +69,7 @@ Globule.prototype.build = function (cb) {
                 fs.readFileSync(
                     __dirname + '/globule.mustache'
                 ).toString(),
-                {modules: that.modules}
+                {modules: that.modules, main: normalize(that.main)}
             ));
         }
     ));
@@ -56,5 +77,5 @@ Globule.prototype.build = function (cb) {
 };
 
 Globule.prototype.addModule = function (mod) {
-    this.modules.push({id: normalize(mod.id), source: replaceRequires(mod).replace(/\n/g, ''), deps: mod.deps});
+    this.modules.push({id: normalize(mod.id), source: indent(replaceRequires(mod)), deps: mod.deps});
 };
