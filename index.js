@@ -12,7 +12,7 @@ exports.build = function (options, cb) {
 
 function Tetanizer(options) {
     this.main = options.main;
-    this.path = options.path;
+    this.path = path.resolve(options.path);
 }
 
 Tetanizer.prototype.normalize = function (id) {
@@ -45,7 +45,7 @@ Tetanizer.prototype.indent = function (source) {
 
 Tetanizer.prototype.build = function (cb) {
     var that = this;
-    var stream = mdeps(path.resolve(this.path + '/' + this.main), {filter: function (id) {
+    var stream = mdeps(this.path + '/' + this.main, {filter: function (id) {
         if (id.match(/^[a-z]+$/)) {
             var isNative = false;
 
@@ -71,7 +71,7 @@ Tetanizer.prototype.build = function (cb) {
                 fs.readFileSync(
                     __dirname + '/tetanize.mustache'
                 ).toString(),
-                {modules: that.modules, main: that.normalize(that.main)}
+                {modules: that.modules, main: that.normalize(that.path + '/' + that.main)}
             ));
         }
     ));

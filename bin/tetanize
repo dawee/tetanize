@@ -5,7 +5,7 @@ var fs = require('fs');
 var nconf = require('nconf');
 var through = require('through');
 
-nconf.argv().env().file({ file: nconf.get('path') + '/package.json' }).env();
+nconf.argv().env().file({ file: (nconf.get('path') || '.') + '/package.json' }).env();
 
 nconf.defaults({
     path: '.',
