@@ -4,12 +4,16 @@ Create a single Titanium module from any node package
 
 ## Installation
 
-`npm install -g tetanize`
+```bash
+$ npm install -g tetanize
+```
 
 ## Usage
 
-`cd <your package directory>`
-`tetanize`
+```bash
+$ cd YOUR_PACKAGE_FOLDER
+$ tetanize
+```
 
 This will create a single JS file with the name of your package.
 
