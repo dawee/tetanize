@@ -49,7 +49,6 @@ Tetanizer.prototype.build = function (cb) {
             try {
                 isNative = (require.resolve(id) === id)
             } catch(e) {
-                console.log(id, 'is not native');
                 isNative = false;
             }
 
