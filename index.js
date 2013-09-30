@@ -5,12 +5,12 @@ var fs = require('fs');
 var path = require('path');
 
 exports.build = function (options, cb) {
-    var globule = new Globule(options);
+    var tetanize = new Tetanizer(options);
 
-    globule.build(cb);
+    tetanize.build(cb);
 };
 
-function Globule(options) {
+function Tetanizer(options) {
     this.main = options.main;
 }
 
@@ -40,7 +40,7 @@ function indent(source) {
     return indented;
 }
 
-Globule.prototype.build = function (cb) {
+Tetanizer.prototype.build = function (cb) {
     var that = this;
     var stream = mdeps(path.resolve(this.main), {filter: function (id) {
         if (id.match(/^[a-z]+$/)) {
@@ -67,7 +67,7 @@ Globule.prototype.build = function (cb) {
         function () {
             cb(mustache.render(
                 fs.readFileSync(
-                    __dirname + '/globule.mustache'
+                    __dirname + '/tetanize.mustache'
                 ).toString(),
                 {modules: that.modules, main: normalize(that.main)}
             ));
@@ -76,6 +76,6 @@ Globule.prototype.build = function (cb) {
 
 };
 
-Globule.prototype.addModule = function (mod) {
+Tetanizer.prototype.addModule = function (mod) {
     this.modules.push({id: normalize(mod.id), source: indent(replaceRequires(mod)), deps: mod.deps});
 };

@@ -1,0 +1,31 @@
+var __tetanize_modules = {};
+var __tetanize_constructors = {};
+var __tetanize_top_require = require;
+var __tetanize_require = function (id) {
+    var required;
+
+    if (__tetanize_modules.hasOwnProperty(id)) {
+        required = __tetanize_modules[id];
+    } else if (__tetanize_constructors.hasOwnProperty(id)) {
+        var mod = {exports: {}};
+
+        __tetanize_constructors[id](__tetanize_require, mod.exports, mod);
+        __tetanize_modules[id] = mod.exports;
+        required = __tetanize_modules[id];
+    } else {
+        throw 'Error : could not find "' + id + '"';
+    }
+
+    return required;
+};
+var __tetanize_define = function (id, constructor) {
+    __tetanize_constructors[id] = constructor;
+};
+
+{{#modules}}
+__tetanize_define('{{{id}}}', function (require, exports, module) { 
+{{{source}}}
+});
+{{/modules}}
+
+module.exports = __tetanize_require('{{{main}}}');

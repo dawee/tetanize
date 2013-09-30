@@ -1,5 +1,5 @@
 {
-  "name": "globule",
+  "name": "tetanize",
   "version": "0.0.1",
   "description": "Concat a Node package to a single CommonJS file",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dawicorti/globule.git"
+    "url": "git://github.com/dawicorti/tetanize.git"
   },
   "keywords": [
     "concat",
@@ -18,7 +18,7 @@
   "author": "David Corticchiato",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/dawicorti/globule/issues"
+    "url": "https://github.com/dawicorti/tetanize/issues"
   },
   "dependencies": {
     "module-deps": "~1.0.2",

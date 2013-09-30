@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var globule = require('..');
+var tetanize = require('..');
 var fs = require('fs');
 var nconf = require('nconf');
 var through = require('through');
@@ -19,6 +19,6 @@ options.forEach(function (opt) {
     data[opt.long] = nconf.get(opt.short) || nconf.get(opt.long);
 });
 
-globule.build(data, function (out) {
+tetanize.build(data, function (out) {
     fs.writeFileSync(nconf.get('out') || nconf.get('o') || nconf.get('name') + '.js', out);
 });
