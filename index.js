@@ -12,25 +12,28 @@ exports.build = function (options, cb) {
 
 function Tetanizer(options) {
     this.main = options.main;
+    this.path = options.path;
 }
 
-function normalize(id) {
-    return path.relative('.', id).replace(/^node_modules\//, '').replace(/\.js$/, '');
-}
+Tetanizer.prototype.normalize = function (id) {
+    return path.relative(this.path, id).replace(/^node_modules\//, '').replace(/\.js$/, '');
+};
 
-function replaceRequires(mod) {
+Tetanizer.prototype.replaceRequires = function (mod) {
+    var that = this;
+
     Object.keys(mod.deps).forEach(function (call) {
         if (typeof mod.deps[call] === 'string') {
-            var id = normalize(mod.deps[call]);
+            var id = that.normalize(mod.deps[call]);
 
             mod.source = mod.source.replace(new RegExp('[\'\"]{1}' + call + '[\'\"]{1}'), '\'' + id + '\'');
         }
     });
 
     return mod.source;
-}
+};
 
-function indent(source) {
+Tetanizer.prototype.indent = function (source) {
     var indented = '';
 
     source.split('\n').forEach(function (line) {
@@ -38,11 +41,11 @@ function indent(source) {
     });
 
     return indented;
-}
+};
 
 Tetanizer.prototype.build = function (cb) {
     var that = this;
-    var stream = mdeps(path.resolve(this.main), {filter: function (id) {
+    var stream = mdeps(path.resolve(this.path + '/' + this.main), {filter: function (id) {
         if (id.match(/^[a-z]+$/)) {
             var isNative = false;
 
@@ -68,7 +71,7 @@ Tetanizer.prototype.build = function (cb) {
                 fs.readFileSync(
                     __dirname + '/tetanize.mustache'
                 ).toString(),
-                {modules: that.modules, main: normalize(that.main)}
+                {modules: that.modules, main: that.normalize(that.main)}
             ));
         }
     ));
@@ -76,5 +79,9 @@ Tetanizer.prototype.build = function (cb) {
 };
 
 Tetanizer.prototype.addModule = function (mod) {
-    this.modules.push({id: normalize(mod.id), source: indent(replaceRequires(mod)), deps: mod.deps});
+    this.modules.push({
+        id: this.normalize(mod.id),
+        source: this.indent(this.replaceRequires(mod)),
+        deps: mod.deps
+    });
 };

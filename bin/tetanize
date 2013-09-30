@@ -4,21 +4,14 @@ var tetanize = require('..');
 var fs = require('fs');
 var nconf = require('nconf');
 var through = require('through');
-var options = [
-    {short: 'm', long: 'main', description: 'entry file to scan'},
-    {short: 'o', long: 'out', description: 'output file'},
-    {short: 'p', long: 'path', description: 'output file'}
-];
-var data = {
-    path: '.'
-};
 
-nconf.argv().env().file({ file: './package.json' });
+nconf.argv().env().file({ file: nconf.get('path') + '/package.json' }).env();
 
-options.forEach(function (opt) {
-    data[opt.long] = nconf.get(opt.short) || nconf.get(opt.long);
+nconf.defaults({
+    path: '.',
+    out: nconf.get('name') + '.js'
 });
 
-tetanize.build(data, function (out) {
-    fs.writeFileSync(nconf.get('out') || nconf.get('o') || nconf.get('name') + '.js', out);
+tetanize.build(nconf.get(), function (out) {
+    fs.writeFileSync(nconf.get('out'), out);
 });

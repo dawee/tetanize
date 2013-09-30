@@ -1,6 +1,6 @@
 {
   "name": "tetanize",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Concat a Node package to a single CommonJS file",
   "main": "index.js",
   "scripts": {
