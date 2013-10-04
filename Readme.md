@@ -17,8 +17,3 @@ $ tetanize
 
 This will create a single JS file with the name of your package.
 
-## Backlog
-
-* Include the Node native modules interfaces : **fs**, **path**, **process** ... 
-
-
